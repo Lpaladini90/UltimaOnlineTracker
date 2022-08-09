@@ -34,14 +34,16 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `champspawn`
+-- Table `run`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `champspawn` ;
+DROP TABLE IF EXISTS `run` ;
 
-CREATE TABLE IF NOT EXISTS `champspawn` (
+CREATE TABLE IF NOT EXISTS `run` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(200) NULL,
-  `location` VARCHAR(200) NULL,
+  `date_attended` DATETIME NULL,
+  `solo` TINYINT NULL,
+  `deaths` INT NULL,
+  `raided` TINYINT NULL,
   `user_id` INT NOT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_champspawn_user1`
@@ -51,7 +53,7 @@ CREATE TABLE IF NOT EXISTS `champspawn` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-CREATE INDEX `fk_champspawn_user1_idx` ON `champspawn` (`user_id` ASC);
+CREATE INDEX `fk_champspawn_user1_idx` ON `run` (`user_id` ASC);
 
 
 -- -----------------------------------------------------
@@ -66,7 +68,7 @@ CREATE TABLE IF NOT EXISTS `scroll` (
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_scroll_champspawn1`
     FOREIGN KEY (`champspawn_id`)
-    REFERENCES `champspawn` (`id`)
+    REFERENCES `run` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -88,7 +90,7 @@ CREATE TABLE IF NOT EXISTS `artifact` (
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_artifact_champspawn`
     FOREIGN KEY (`champspawn_id`)
-    REFERENCES `champspawn` (`id`)
+    REFERENCES `run` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -171,6 +173,45 @@ CREATE INDEX `fk_scroll_has_category_category1_idx` ON `scroll_has_category` (`c
 
 CREATE INDEX `fk_scroll_has_category_scroll1_idx` ON `scroll_has_category` (`scroll_id` ASC);
 
+
+-- -----------------------------------------------------
+-- Table `champspawn`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `champspawn` ;
+
+CREATE TABLE IF NOT EXISTS `champspawn` (
+  `id` INT NOT NULL,
+  `name` VARCHAR(45) NULL,
+  `location` VARCHAR(45) NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `run_has_champspawn`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `run_has_champspawn` ;
+
+CREATE TABLE IF NOT EXISTS `run_has_champspawn` (
+  `run_id` INT NOT NULL,
+  `champspawn_id` INT NOT NULL,
+  PRIMARY KEY (`run_id`, `champspawn_id`),
+  CONSTRAINT `fk_run_has_champspawn_run1`
+    FOREIGN KEY (`run_id`)
+    REFERENCES `run` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_run_has_champspawn_champspawn1`
+    FOREIGN KEY (`champspawn_id`)
+    REFERENCES `champspawn` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+CREATE INDEX `fk_run_has_champspawn_champspawn1_idx` ON `run_has_champspawn` (`champspawn_id` ASC);
+
+CREATE INDEX `fk_run_has_champspawn_run1_idx` ON `run_has_champspawn` (`run_id` ASC);
+
 SET SQL_MODE = '';
 DROP USER IF EXISTS admin@localhost;
 SET SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
@@ -189,15 +230,15 @@ COMMIT;
 
 
 -- -----------------------------------------------------
--- Data for table `champspawn`
+-- Data for table `run`
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `uodb`;
-INSERT INTO `champspawn` (`id`, `name`, `location`, `user_id`) VALUES (1, 'Front Porch', 'T2A', 1);
-INSERT INTO `champspawn` (`id`, `name`, `location`, `user_id`) VALUES (2, 'Rikki', 'Destard', 1);
-INSERT INTO `champspawn` (`id`, `name`, `location`, `user_id`) VALUES (3, 'Primevil Lich', 'Stygian Abyss', 1);
-INSERT INTO `champspawn` (`id`, `name`, `location`, `user_id`) VALUES (4, 'Turtle', 'Valley of Eodon', 1);
-INSERT INTO `champspawn` (`id`, `name`, `location`, `user_id`) VALUES (5, 'Terathan Keep', 'Lost Lands', 1);
+INSERT INTO `run` (`id`, `date_attended`, `solo`, `deaths`, `raided`, `user_id`) VALUES (1, NULL, 1, 2, 1, 1);
+INSERT INTO `run` (`id`, `date_attended`, `solo`, `deaths`, `raided`, `user_id`) VALUES (2, NULL, 1, 0, 0, 1);
+INSERT INTO `run` (`id`, `date_attended`, `solo`, `deaths`, `raided`, `user_id`) VALUES (3, NULL, 0, 1, 0, 1);
+INSERT INTO `run` (`id`, `date_attended`, `solo`, `deaths`, `raided`, `user_id`) VALUES (4, NULL, 1, 0, 0, 1);
+INSERT INTO `run` (`id`, `date_attended`, `solo`, `deaths`, `raided`, `user_id`) VALUES (5, NULL, 0, 0, 0, 0);
 
 COMMIT;
 
@@ -266,6 +307,32 @@ COMMIT;
 START TRANSACTION;
 USE `uodb`;
 INSERT INTO `scroll_has_category` (`scroll_id`, `category_id`) VALUES (1, 1);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `champspawn`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `uodb`;
+INSERT INTO `champspawn` (`id`, `name`, `location`) VALUES (1, 'Rikki', 'Destard');
+INSERT INTO `champspawn` (`id`, `name`, `location`) VALUES (2, 'Mephitis', 'Terethan Keep');
+INSERT INTO `champspawn` (`id`, `name`, `location`) VALUES (3, 'Primevil Lich', 'Stygian Abyss');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `run_has_champspawn`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `uodb`;
+INSERT INTO `run_has_champspawn` (`run_id`, `champspawn_id`) VALUES (1, 1);
+INSERT INTO `run_has_champspawn` (`run_id`, `champspawn_id`) VALUES (2, 1);
+INSERT INTO `run_has_champspawn` (`run_id`, `champspawn_id`) VALUES (3, 1);
+INSERT INTO `run_has_champspawn` (`run_id`, `champspawn_id`) VALUES (4, 1);
+INSERT INTO `run_has_champspawn` (`run_id`, `champspawn_id`) VALUES (5, 2);
 
 COMMIT;
 

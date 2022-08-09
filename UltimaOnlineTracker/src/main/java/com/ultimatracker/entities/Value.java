@@ -24,7 +24,9 @@ public class Value {
 	private int pointGain;
 
 	@ManyToMany
-	@JoinTable(name = "scroll_has_value", joinColumns = @JoinColumn(name = "value_id"), inverseJoinColumns = @JoinColumn(name = "scroll_id"))
+	@JoinTable(name = "scroll_has_value",
+	joinColumns = @JoinColumn(name = "value_id"),
+	inverseJoinColumns = @JoinColumn(name = "scroll_id"))
 	private List<Scroll> scrolls;
 
 	public Value() {

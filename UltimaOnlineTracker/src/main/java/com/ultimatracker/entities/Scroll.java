@@ -21,7 +21,7 @@ public class Scroll {
 	private String name;
 	
 	@ManyToOne
-	@JoinColumn(name="scroll")
+	@JoinColumn(name="champspawn_id")
 	private ChampSpawn champ;
 	
 	@ManyToMany(mappedBy="scrolls")

@@ -10,10 +10,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-
-
 @Entity
 public class User {
 
@@ -29,32 +25,25 @@ public class User {
 
 	private String username;
 
-	private String password; 
+	private String password;
 
 	private String email;
 
 	private String role;
 
-	private String biography;
-	
-	private boolean enabled;
-	
-	@Column(name = "image_url")
-	private String imageUrl;
+	private boolean active;
+
+	@OneToMany(mappedBy = "user")
+	private List<ChampSpawn> champs;
 
 //	------------------------ RELATIONSHIP FIELDS -----------------
-	
-	
+
 //	------------------------ CONSTRUCTORS -----------------
- 
+
 	public User() {
 		super();
 	}
 
-//	------------------------ RELATIONAL MAPPING -----------------
-
-	
-//	------------------------ GETTERS/SETTERS -----------------
 	public int getId() {
 		return id;
 	}
@@ -69,14 +58,6 @@ public class User {
 
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
-	}
-
-	public boolean isEnabled() {
-		return enabled;
-	}
-
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
 	}
 
 	public String getLastName() {
@@ -119,40 +100,31 @@ public class User {
 		this.role = role;
 	}
 
-	
-
-	public String getBiography() {
-		return biography;
+	public boolean isActive() {
+		return active;
 	}
 
-	public void setBiography(String biography) {
-		this.biography = biography;
-	}
-	
-	
-
-	public String getImageUrl() {
-		return imageUrl;
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 
-	public void setImageUrl(String imageUrl) {
-		this.imageUrl = imageUrl;
+	public List<ChampSpawn> getChamps() {
+		return champs;
 	}
-//	------------- TO STRING -----------------
 
+	public void setChamps(List<ChampSpawn> champs) {
+		this.champs = champs;
+	}
 
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", username=" + username
-				+ ", password=" + password + ", email=" + email + ", role=" + role + ", biography=" + biography
-				+ ", enabled=" + enabled + ", imageUrl=" + imageUrl + "]";
+				+ ", password=" + password + ", email=" + email + ", role=" + role + ", active=" + active + "]";
 	}
-	
-//	------------- HASHCODE & EQUALS -----------------
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(biography, email, enabled, firstName, id, imageUrl, lastName, password, role, username);
+		return Objects.hash(active, email, firstName, id, lastName, password, role, username);
 	}
 
 	@Override
@@ -164,11 +136,10 @@ public class User {
 		if (getClass() != obj.getClass())
 			return false;
 		User other = (User) obj;
-		return Objects.equals(biography, other.biography) && Objects.equals(email, other.email)
-				&& enabled == other.enabled && Objects.equals(firstName, other.firstName) && id == other.id
-				&& Objects.equals(imageUrl, other.imageUrl) && Objects.equals(lastName, other.lastName)
-				&& Objects.equals(password, other.password) && Objects.equals(role, other.role)
-				&& Objects.equals(username, other.username);
+		return active == other.active && Objects.equals(email, other.email)
+				&& Objects.equals(firstName, other.firstName) && id == other.id
+				&& Objects.equals(lastName, other.lastName) && Objects.equals(password, other.password)
+				&& Objects.equals(role, other.role) && Objects.equals(username, other.username);
 	}
 
 }

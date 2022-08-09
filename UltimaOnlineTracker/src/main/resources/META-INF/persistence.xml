@@ -12,6 +12,10 @@
      
     <class>com.ultimatracker.entities.ChampSpawn</class>
     <class>com.ultimatracker.entities.User</class>
+    <class>com.ultimatracker.entities.Artifact</class>
+    <class>com.ultimatracker.entities.Scroll</class>
+    <class>com.ultimatracker.entities.Value</class>
+    <class>com.ultimatracker.entities.Category</class>
     
     
      

@@ -7,55 +7,58 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+
 @Entity
 public class ChampSpawn {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	
+
 	private String name;
-	
+
 	private String location;
-	
-	@OneToMany(mappedBy="champspawn")
+
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	private User user;
+
+	@OneToMany(mappedBy = "champ")
 	private List<Scroll> scrolls;
 
-	@OneToMany(mappedBy="champspawn")
-	private Artifact artis;
-	
-	
-	
+	@OneToMany(mappedBy = "champ")
+	private List<Artifact> artis;
+
 	public ChampSpawn() {
 		super();
 	}
-	
-	
 
 	public List<Scroll> getScrolls() {
 		return scrolls;
 	}
 
-
-
 	public void setScrolls(List<Scroll> scrolls) {
 		this.scrolls = scrolls;
 	}
 
-	
-
-	public Artifact getArtis() {
+	public List<Artifact> getArtis() {
 		return artis;
 	}
 
-
-
-	public void setArtis(Artifact artis) {
+	public void setArtis(List<Artifact> artis) {
 		this.artis = artis;
 	}
 
+	public User getUser() {
+		return user;
+	}
 
+	public void setUser(User user) {
+		this.user = user;
+	}
 
 	public int getId() {
 		return id;
@@ -102,7 +105,5 @@ public class ChampSpawn {
 		ChampSpawn other = (ChampSpawn) obj;
 		return id == other.id && Objects.equals(location, other.location) && Objects.equals(name, other.name);
 	}
-	
-	
-	
+
 }
