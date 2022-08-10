@@ -34,7 +34,7 @@ public class User {
 	private boolean active;
 
 	@OneToMany(mappedBy = "user")
-	private List<ChampSpawn> champs;
+	private List<Run> runs;
 
 //	------------------------ RELATIONSHIP FIELDS -----------------
 
@@ -108,23 +108,24 @@ public class User {
 		this.active = active;
 	}
 
-	public List<ChampSpawn> getChamps() {
-		return champs;
+	public List<Run> getRuns() {
+		return runs;
 	}
 
-	public void setChamps(List<ChampSpawn> champs) {
-		this.champs = champs;
+	public void setRuns(List<Run> runs) {
+		this.runs = runs;
 	}
 
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", username=" + username
-				+ ", password=" + password + ", email=" + email + ", role=" + role + ", active=" + active + "]";
+				+ ", password=" + password + ", email=" + email + ", role=" + role + ", active=" + active + ", runs="
+				+ runs + "]";
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(active, email, firstName, id, lastName, password, role, username);
+		return Objects.hash(active, email, firstName, id, lastName, password, role, runs, username);
 	}
 
 	@Override
@@ -139,7 +140,8 @@ public class User {
 		return active == other.active && Objects.equals(email, other.email)
 				&& Objects.equals(firstName, other.firstName) && id == other.id
 				&& Objects.equals(lastName, other.lastName) && Objects.equals(password, other.password)
-				&& Objects.equals(role, other.role) && Objects.equals(username, other.username);
+				&& Objects.equals(role, other.role) && Objects.equals(runs, other.runs)
+				&& Objects.equals(username, other.username);
 	}
 
 }

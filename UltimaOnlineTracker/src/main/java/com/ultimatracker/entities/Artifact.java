@@ -8,43 +8,35 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
 @Entity
 public class Artifact {
 
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	
+
 	private String name;
-	
+
 	private String description;
-	
+
 	private int quantity;
 
 	@ManyToOne
-	@JoinColumn(name="artifact_id")
-	private ChampSpawn champ;
-	
-	
-	
+	@JoinColumn(name = "run_id")
+	private Run run;
+
 	public Artifact() {
 		super();
 	}
-	
-	
 
-	public ChampSpawn getChamp() {
-		return champ;
+	public Run getRun() {
+		return run;
 	}
 
-
-
-	public void setChamp(ChampSpawn champ) {
-		this.champ = champ;
+	public void setRun(Run run) {
+		this.run = run;
 	}
-
-
 
 	public int getId() {
 		return id;
@@ -81,12 +73,12 @@ public class Artifact {
 	@Override
 	public String toString() {
 		return "Artifact [id=" + id + ", name=" + name + ", description=" + description + ", quantity=" + quantity
-				+ "]";
+				+ ", run=" + run + "]";
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(description, id, name, quantity);
+		return Objects.hash(description, id, name, quantity, run);
 	}
 
 	@Override
@@ -99,11 +91,7 @@ public class Artifact {
 			return false;
 		Artifact other = (Artifact) obj;
 		return Objects.equals(description, other.description) && id == other.id && Objects.equals(name, other.name)
-				&& quantity == other.quantity;
+				&& quantity == other.quantity && Objects.equals(run, other.run);
 	}
-	
-	
-	
-	
+
 }
-	

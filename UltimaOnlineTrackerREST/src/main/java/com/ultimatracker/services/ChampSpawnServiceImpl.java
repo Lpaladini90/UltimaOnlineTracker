@@ -33,7 +33,7 @@ public class ChampSpawnServiceImpl implements ChampSpawnService {
 		}
 
 		return null;
-	}
+	} 
 
 	@Override
 	public ChampSpawn findById(String username, int champId) {

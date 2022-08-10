@@ -1,5 +1,6 @@
 package com.ultimatracker.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -8,8 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
 @Entity
 public class ChampSpawn {
@@ -22,42 +23,49 @@ public class ChampSpawn {
 
 	private String location;
 
-	@ManyToOne
-	@JoinColumn(name = "user_id")
-	private User user;
-
-	@OneToMany(mappedBy = "champ")
-	private List<Scroll> scrolls;
-
-	@OneToMany(mappedBy = "champ")
-	private List<Artifact> artis;
+	@ManyToMany
+	@JoinTable(name = "run_has_champspawn", joinColumns = @JoinColumn(name = "run_id"), inverseJoinColumns = @JoinColumn(name = "champspawn_id"))
+	private List<Run> runs;
 
 	public ChampSpawn() {
 		super();
 	}
 
-	public List<Scroll> getScrolls() {
-		return scrolls;
+	public void addRun(Run run) {
+		if(runs == null) {
+			runs = new ArrayList<>();
+			if(!runs.contains(run)){
+				runs.add(run);
+				run.addChampSpawn(this);
+			
+			}
+		}
+		else {
+			if(!runs.contains(run)) {
+				runs.add(run);
+				run.addChampSpawn(this);
+			}
+		}
+		
+	}
+	
+	public void removeRun(Run run) {
+		if(runs.contains(run)) {
+			runs.remove(run);
+			run.removeChampSpawn(this);
+		}
+		
+		
+	}
+	
+	
+	
+	public List<Run> getRuns() {
+		return runs;
 	}
 
-	public void setScrolls(List<Scroll> scrolls) {
-		this.scrolls = scrolls;
-	}
-
-	public List<Artifact> getArtis() {
-		return artis;
-	}
-
-	public void setArtis(List<Artifact> artis) {
-		this.artis = artis;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
+	public void setRuns(List<Run> runs) {
+		this.runs = runs;
 	}
 
 	public int getId() {
