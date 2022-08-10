@@ -12,5 +12,10 @@ public interface ArtifactService {
 
 	public Artifact findById(String username, int artifactId);
 	
-	public Artifact addArtifact(String username);
+	public Artifact addArtifact(String username, Artifact arti);
+	
+	public Artifact editArtifact(String username, int artiId, Artifact artifact);
+
+	
+	
 }

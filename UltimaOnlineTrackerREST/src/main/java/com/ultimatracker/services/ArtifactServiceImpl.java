@@ -1,34 +1,101 @@
 package com.ultimatracker.services;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.ultimatracker.entities.Artifact;
+import com.ultimatracker.entities.Run;
+import com.ultimatracker.entities.User;
+import com.ultimatracker.repositories.ArtifactRepository;
+import com.ultimatracker.repositories.UserRepository;
 
+@Service
 public class ArtifactServiceImpl implements ArtifactService {
+
+	@Autowired
+	private UserRepository userRepo;
+
+	@Autowired
+	private ArtifactRepository artiRepo;
 
 	@Override
 	public List<Artifact> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+
+		return artiRepo.findAll();
 	}
 
 	@Override
 	public List<Artifact> findAllUsersArtifacts(String username) {
-		// TODO Auto-generated method stub
+		User user = userRepo.findByUsername(username);
+		if (user != null) {
+			List<Run> allRuns = user.getRuns();
+
+			List<Artifact> userArtifacts = new ArrayList<>();
+
+			for (Run run : allRuns) {
+				userArtifacts.addAll(run.getArtis());
+
+			}
+			artiRepo.saveAllAndFlush(userArtifacts);
+			return userArtifacts;
+
+		}
+
 		return null;
 	}
 
 	@Override
 	public Artifact findById(String username, int artifactId) {
-		// TODO Auto-generated method stub
+		User user = userRepo.findByUsername(username);
+		if (user != null) {
+
+			Optional<Artifact> artiOp = artiRepo.findById(artifactId);
+			if (artiOp.isPresent()) {
+				Artifact arti = artiOp.get();
+				return arti;
+
+			}
+		}
+
 		return null;
 	}
 
 	@Override
-	public Artifact addArtifact(String username) {
-		// TODO Auto-generated method stub
+	public Artifact addArtifact(String username, Artifact arti) {
+		User user = userRepo.findByUsername(username);
+		if (user != null) {
+			Artifact newArtifact = arti;
+			artiRepo.saveAndFlush(newArtifact);
+			return newArtifact;
+		}
+
 		return null;
 	}
-	
+
+	@Override
+	public Artifact editArtifact(String username, int artiId, Artifact artifact) {
+		User user = userRepo.findByUsername(username);
+		if (user != null) {
+
+			Optional<Artifact> artiOp = artiRepo.findById(artiId);
+			if (artiOp.isPresent()) {
+				Artifact managed = artiOp.get();
+				
+				managed.setName(artifact.getName());
+				managed.setDescription(artifact.getDescription());
+				managed.setQuantity(artiId);
+				
+				artiRepo.saveAndFlush(managed);
+				return managed;
+
+			}
+		}
+		
+		return null;
+	}
+
 }
-	
