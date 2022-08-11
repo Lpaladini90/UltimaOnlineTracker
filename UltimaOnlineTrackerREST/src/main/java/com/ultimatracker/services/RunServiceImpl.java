@@ -1,11 +1,11 @@
 package com.ultimatracker.services;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.web.context.SaveContextOnUpdateOrErrorResponseWrapper;
 import org.springframework.stereotype.Service;
 
 import com.ultimatracker.entities.Artifact;
@@ -25,12 +25,12 @@ public class RunServiceImpl implements RunService {
 	private UserRepository userRepo;
 
 	@Override
-	public List<Run> indexAll(String username) {
+	public List<Run> indexAllUserRuns(String username) {
 		User user = userRepo.findByUsername(username);
 
-		if (user != null) {
-			List<Run> runs = runRepo.findAll();
-			return runs;
+		if (user != null ) {
+			
+			return runRepo.findByUser_Username(username);
 		}
 
 		return null;
@@ -58,6 +58,7 @@ public class RunServiceImpl implements RunService {
 
 		if (user != null) {
 			Run newRun = run;
+			newRun.setUser(user);
 
 			runRepo.saveAndFlush(newRun);
 			return newRun;
@@ -95,11 +96,6 @@ public class RunServiceImpl implements RunService {
 		return null;
 	}
 
-	@Override
-	public boolean disableChampSpawn(String username, Run run, int runId) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 	@Override
 	public Run addScrolls(String username, List<Scroll> scrolls, int runId) {
@@ -147,6 +143,12 @@ public class RunServiceImpl implements RunService {
 	public List<Run> findByDate(String username, LocalDateTime attendedDate) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public boolean disableRun(String username, Run run, int runId) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

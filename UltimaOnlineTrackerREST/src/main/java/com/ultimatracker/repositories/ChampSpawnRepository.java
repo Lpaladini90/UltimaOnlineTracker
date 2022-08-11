@@ -7,6 +7,5 @@ import com.ultimatracker.entities.User;
 
 public interface ChampSpawnRepository extends JpaRepository<ChampSpawn, Integer> {
 
-	User findByUser_Username(String username);
-	
+		
 }

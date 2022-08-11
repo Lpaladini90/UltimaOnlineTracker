@@ -9,10 +9,10 @@ import com.ultimatracker.entities.Run;
 
 public interface RunRepository extends JpaRepository<Run, Integer> {
 
-	public List<Run> findByAttendedDateLike(String username, LocalDateTime attendedDate);
+	public List<Run> findByAttendedDateLike(LocalDateTime attendedDate);
 	
-	public List<Run> findBySoloLike(String username, boolean solo);
+	public List<Run> findBySoloLike( boolean solo);
 
-	
+	public List<Run> findByUser_Username(String username);
 	
 }

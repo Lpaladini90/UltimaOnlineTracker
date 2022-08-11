@@ -6,4 +6,6 @@ import com.ultimatracker.entities.Value;
 
 public interface ValueRepository extends JpaRepository<Value, Integer> {
 
+	
+	
 }

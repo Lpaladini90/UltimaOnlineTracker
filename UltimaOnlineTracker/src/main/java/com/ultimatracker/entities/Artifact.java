@@ -21,6 +21,9 @@ public class Artifact {
 	private String description;
 
 	private int quantity;
+	
+	private String slot;
+	
 
 	@ManyToOne
 	@JoinColumn(name = "run_id")
@@ -68,6 +71,16 @@ public class Artifact {
 
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
+	}
+	
+	
+
+	public String getSlot() {
+		return slot;
+	}
+
+	public void setSlot(String slot) {
+		this.slot = slot;
 	}
 
 	@Override

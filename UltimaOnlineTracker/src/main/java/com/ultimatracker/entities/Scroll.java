@@ -11,90 +11,82 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+
 @Entity
 public class Scroll {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	
+
 	private String name;
-	
+
 	@ManyToOne
-	@JoinColumn(name="run_id")
+	@JoinColumn(name = "run_id")
 	private Run run;
-	
-	@ManyToMany(mappedBy="scrolls")
+
+	@ManyToMany(mappedBy = "scrolls")
 	private List<Value> values;
-	
 
-
-	@ManyToMany(mappedBy="scrolls")
+	@ManyToMany(mappedBy = "scrolls")
 	private List<Category> categories;
-	
 
 	public Scroll() {
 		super();
 	}
-	
-	
+
 	public void addValue(Value value) {
-		if(values == null) {
+		if (values == null) {
 			values = new ArrayList<>();
-			if(!values.contains(value)) {
+			if (!values.contains(value)) {
+				values.add(value);
+				value.addScroll(this);
+			}
+		} else {
+			if (!values.contains(value)) {
 				values.add(value);
 				value.addScroll(this);
 			}
 		}
-		else {
-			if(!values.contains(value)) {
-				values.add(value);
-				value.addScroll(this);
-			}
-		}
-		
+
 	}
-	
+
 	public void removeValue(Value value) {
-		if(values.contains(value)) {
+		if (values.contains(value)) {
 			values.remove(value);
 			value.removeScroll(this);
 		}
-		
+
 	}
-	
+
 	public void addCategory(Category category) {
-	if(categories == null) {
-		categories = new ArrayList<>();
-		if(!categories.contains(category)) {
-			categories.add(category);
-			category.addScroll(this);
+		if (categories == null) {
+			categories = new ArrayList<>();
+			if (!categories.contains(category)) {
+				categories.add(category);
+				category.addScroll(this);
+			}
 		}
-	}
-	
-	else {
-		if(!categories.contains(category)) {
-			categories.add(category);
-			category.addScroll(this);
+
+		else {
+			if (!categories.contains(category)) {
+				categories.add(category);
+				category.addScroll(this);
+			}
 		}
+
 	}
-		
-	}
-	
-	
-	
+
 	public void removeCategory(Category category) {
-		if(categories.contains(category)) {
+		if (categories.contains(category)) {
 			categories.remove(category);
 			category.removeScroll(this);
 		}
 	}
-	
 
 	public int getId() {
 		return id;
 	}
-	
 
 	public List<Category> getCategories() {
 		return categories;
@@ -107,7 +99,6 @@ public class Scroll {
 	public Run getRun() {
 		return run;
 	}
-
 
 	public void setRun(Run run) {
 		this.run = run;
@@ -156,7 +147,5 @@ public class Scroll {
 		return Objects.equals(categories, other.categories) && id == other.id && Objects.equals(name, other.name)
 				&& Objects.equals(run, other.run) && Objects.equals(values, other.values);
 	}
-	
-	
-	
+
 }

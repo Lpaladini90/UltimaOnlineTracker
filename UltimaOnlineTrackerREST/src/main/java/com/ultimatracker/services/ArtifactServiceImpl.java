@@ -98,4 +98,19 @@ public class ArtifactServiceImpl implements ArtifactService {
 		return null;
 	}
 
+	@Override
+	public List<Artifact> findBySlot(String username, String keyword) {
+		
+		String search = "%" + keyword + "%";
+		
+		User user = userRepo.findByUsername(username);
+		if(user !=null) {
+			List<Artifact> artis = artiRepo.findBySlot(search);
+			return artis;
+			
+		}
+		
+		return null;
+	}
+
 }

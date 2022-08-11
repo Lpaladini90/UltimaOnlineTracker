@@ -9,7 +9,7 @@ import com.ultimatracker.entities.Scroll;
 
 public interface RunService {
 
-	List<Run> indexAll(String username);
+	List<Run> indexAllUserRuns(String username);
 	
 	Run findById(String username, int runId);
 	
@@ -24,7 +24,7 @@ public interface RunService {
 	List<Run> findByDate(String username, LocalDateTime attendedDate);
 	
 	
-	boolean disableChampSpawn(String username, Run run, int runId);
+	boolean disableRun(String username, Run run, int runId);
 	
 	
 	

@@ -3,6 +3,7 @@ package com.ultimatracker.services;
 import java.util.List;
 
 import com.ultimatracker.entities.Scroll;
+import com.ultimatracker.entities.Value;
 
 public interface ScrollService {
 
@@ -16,7 +17,8 @@ public interface ScrollService {
 
 	Scroll editScroll(String username, int scrollId, Scroll scroll);
 	
-
+	
+	
 	
 
 }

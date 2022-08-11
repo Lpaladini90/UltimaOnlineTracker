@@ -10,6 +10,7 @@ import com.ultimatracker.entities.Artifact;
 import com.ultimatracker.entities.Run;
 import com.ultimatracker.entities.Scroll;
 import com.ultimatracker.entities.User;
+import com.ultimatracker.entities.Value;
 import com.ultimatracker.repositories.ScrollRepository;
 import com.ultimatracker.repositories.UserRepository;
 
@@ -96,5 +97,7 @@ public class ScrollServiceImpl implements ScrollService {
 		
 		return null;
 	}
+
+	
 	
 }
