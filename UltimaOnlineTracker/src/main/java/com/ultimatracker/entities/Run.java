@@ -15,6 +15,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Run {
 
@@ -31,16 +33,18 @@ public class Run {
 	@Column(name="date_attended")
 	private LocalDateTime attendedDate;
 	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="user_id")
 	private User user;
-	
+	@JsonIgnore
 	@OneToMany(mappedBy = "run")
 	private List<Scroll> scrolls;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "run")
-	private List<Artifact> artis;
-	
+	private List<Artifact> artifacts;
+	@JsonIgnore
 	@ManyToMany(mappedBy="runs")
 	private List<ChampSpawn> champs;
 	
@@ -156,17 +160,17 @@ public class Run {
 
 
 
-	public List<Artifact> getArtis() {
-		return artis;
+	
+
+
+
+	public List<Artifact> getArtifacts() {
+		return artifacts;
 	}
 
-
-
-	public void setArtis(List<Artifact> artis) {
-		this.artis = artis;
+	public void setArtifacts(List<Artifact> artifacts) {
+		this.artifacts = artifacts;
 	}
-
-
 
 	public List<ChampSpawn> getChamps() {
 		return champs;
@@ -182,7 +186,7 @@ public class Run {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(artis, attendedDate, champs, deaths, id, raided, scrolls, solo, user);
+		return Objects.hash(artifacts, attendedDate, champs, deaths, id, raided, scrolls, solo, user);
 	}
 
 
@@ -196,7 +200,7 @@ public class Run {
 		if (getClass() != obj.getClass())
 			return false;
 		Run other = (Run) obj;
-		return Objects.equals(artis, other.artis) && Objects.equals(attendedDate, other.attendedDate)
+		return Objects.equals(artifacts, other.artifacts) && Objects.equals(attendedDate, other.attendedDate)
 				&& Objects.equals(champs, other.champs) && deaths == other.deaths && id == other.id
 				&& raided == other.raided && Objects.equals(scrolls, other.scrolls) && solo == other.solo
 				&& Objects.equals(user, other.user);
@@ -207,8 +211,8 @@ public class Run {
 	@Override
 	public String toString() {
 		return "Run [id=" + id + ", solo=" + solo + ", raided=" + raided + ", deaths=" + deaths + ", attendedDate="
-				+ attendedDate + ", user=" + user + ", scrolls=" + scrolls + ", artis=" + artis + ", champs=" + champs
-				+ "]";
+				+ attendedDate + ", user=" + user + ", scrolls=" + scrolls + ", artifacts=" + artifacts + ", champs="
+				+ champs + "]";
 	}
 
 	

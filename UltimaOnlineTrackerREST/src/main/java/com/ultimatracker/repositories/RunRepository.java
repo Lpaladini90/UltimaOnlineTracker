@@ -15,4 +15,5 @@ public interface RunRepository extends JpaRepository<Run, Integer> {
 
 	public List<Run> findByUser_Username(String username);
 	
+	
 }

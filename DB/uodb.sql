@@ -21,14 +21,14 @@ USE `uodb` ;
 DROP TABLE IF EXISTS `user` ;
 
 CREATE TABLE IF NOT EXISTS `user` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `username` VARCHAR(45) NULL,
-  `password` VARCHAR(45) NULL,
-  `email` VARCHAR(45) NULL,
+  `password` VARCHAR(200) NULL,
+  `email` VARCHAR(200) NULL,
   `first_name` VARCHAR(45) NULL,
   `last_name` VARCHAR(45) NULL,
-  `active` TINYINT NULL,
-  `role` VARCHAR(45) NULL,
+  `active` TINYINT NULL DEFAULT 1,
+  `role` VARCHAR(200) NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
@@ -62,18 +62,18 @@ CREATE INDEX `fk_champspawn_user1_idx` ON `run` (`user_id` ASC);
 DROP TABLE IF EXISTS `scroll` ;
 
 CREATE TABLE IF NOT EXISTS `scroll` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NULL,
-  `champspawn_id` INT NOT NULL,
+  `run_id` INT NOT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_scroll_champspawn1`
-    FOREIGN KEY (`champspawn_id`)
+    FOREIGN KEY (`run_id`)
     REFERENCES `run` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-CREATE INDEX `fk_scroll_champspawn1_idx` ON `scroll` (`champspawn_id` ASC);
+CREATE INDEX `fk_scroll_champspawn1_idx` ON `scroll` (`run_id` ASC);
 
 
 -- -----------------------------------------------------
@@ -82,20 +82,21 @@ CREATE INDEX `fk_scroll_champspawn1_idx` ON `scroll` (`champspawn_id` ASC);
 DROP TABLE IF EXISTS `artifact` ;
 
 CREATE TABLE IF NOT EXISTS `artifact` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NULL,
   `description` VARCHAR(45) NULL,
   `quantity` VARCHAR(45) NULL,
-  `champspawn_id` INT NOT NULL,
+  `run_id` INT NOT NULL,
+  `slot` VARCHAR(200) NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_artifact_champspawn`
-    FOREIGN KEY (`champspawn_id`)
+    FOREIGN KEY (`run_id`)
     REFERENCES `run` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-CREATE INDEX `fk_artifact_champspawn_idx` ON `artifact` (`champspawn_id` ASC);
+CREATE INDEX `fk_artifact_champspawn_idx` ON `artifact` (`run_id` ASC);
 
 
 -- -----------------------------------------------------
@@ -104,7 +105,7 @@ CREATE INDEX `fk_artifact_champspawn_idx` ON `artifact` (`champspawn_id` ASC);
 DROP TABLE IF EXISTS `category` ;
 
 CREATE TABLE IF NOT EXISTS `category` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
@@ -116,7 +117,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `value` ;
 
 CREATE TABLE IF NOT EXISTS `value` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `point_gain` INT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
@@ -180,7 +181,7 @@ CREATE INDEX `fk_scroll_has_category_scroll1_idx` ON `scroll_has_category` (`scr
 DROP TABLE IF EXISTS `champspawn` ;
 
 CREATE TABLE IF NOT EXISTS `champspawn` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NULL,
   `location` VARCHAR(45) NULL,
   PRIMARY KEY (`id`))
@@ -193,7 +194,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `run_has_champspawn` ;
 
 CREATE TABLE IF NOT EXISTS `run_has_champspawn` (
-  `run_id` INT NOT NULL,
+  `run_id` INT NOT NULL AUTO_INCREMENT,
   `champspawn_id` INT NOT NULL,
   PRIMARY KEY (`run_id`, `champspawn_id`),
   CONSTRAINT `fk_run_has_champspawn_run1`
@@ -224,7 +225,7 @@ GRANT SELECT, INSERT, TRIGGER, UPDATE, DELETE ON TABLE * TO 'admin'@'localhost';
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `uodb`;
-INSERT INTO `user` (`id`, `username`, `password`, `email`, `first_name`, `last_name`, `active`, `role`) VALUES (1, 'test', 'test', 'test@gmail.com', 'test', 'test', 1, 'admin');
+INSERT INTO `user` (`id`, `username`, `password`, `email`, `first_name`, `last_name`, `active`, `role`) VALUES (1, 'test', '$2a$10$lppE7mc9ZVOWOCjEZdXoi.bwiPTlKN9Jsze1uD6eUYBeI9GMqfRh.', 'test@gmail.com', 'test', 'test', 1, 'admin');
 
 COMMIT;
 
@@ -248,7 +249,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `uodb`;
-INSERT INTO `scroll` (`id`, `name`, `champspawn_id`) VALUES (1, 'Parrying', 2);
+INSERT INTO `scroll` (`id`, `name`, `run_id`) VALUES (1, 'Parrying', 2);
 
 COMMIT;
 
@@ -258,7 +259,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `uodb`;
-INSERT INTO `artifact` (`id`, `name`, `description`, `quantity`, `champspawn_id`) VALUES (1, 'Janna\'s Staff', 'Luck/Mage staff', '1', 2);
+INSERT INTO `artifact` (`id`, `name`, `description`, `quantity`, `run_id`, `slot`) VALUES (1, 'Janna\'s Staff', 'Luck/Mage staff', '1', 2, 'hand');
 
 COMMIT;
 
@@ -319,20 +320,6 @@ USE `uodb`;
 INSERT INTO `champspawn` (`id`, `name`, `location`) VALUES (1, 'Rikki', 'Destard');
 INSERT INTO `champspawn` (`id`, `name`, `location`) VALUES (2, 'Mephitis', 'Terethan Keep');
 INSERT INTO `champspawn` (`id`, `name`, `location`) VALUES (3, 'Primevil Lich', 'Stygian Abyss');
-
-COMMIT;
-
-
--- -----------------------------------------------------
--- Data for table `run_has_champspawn`
--- -----------------------------------------------------
-START TRANSACTION;
-USE `uodb`;
-INSERT INTO `run_has_champspawn` (`run_id`, `champspawn_id`) VALUES (1, 1);
-INSERT INTO `run_has_champspawn` (`run_id`, `champspawn_id`) VALUES (2, 1);
-INSERT INTO `run_has_champspawn` (`run_id`, `champspawn_id`) VALUES (3, 1);
-INSERT INTO `run_has_champspawn` (`run_id`, `champspawn_id`) VALUES (4, 1);
-INSERT INTO `run_has_champspawn` (`run_id`, `champspawn_id`) VALUES (5, 2);
 
 COMMIT;
 

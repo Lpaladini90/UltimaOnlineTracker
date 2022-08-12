@@ -37,7 +37,7 @@ public class ArtifactServiceImpl implements ArtifactService {
 			List<Artifact> userArtifacts = new ArrayList<>();
 
 			for (Run run : allRuns) {
-				userArtifacts.addAll(run.getArtis());
+				userArtifacts.addAll(run.getArtifacts());
 
 			}
 			artiRepo.saveAllAndFlush(userArtifacts);

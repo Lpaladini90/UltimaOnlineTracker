@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Artifact {
 
@@ -22,9 +24,10 @@ public class Artifact {
 
 	private int quantity;
 	
+	
 	private String slot;
 	
-
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "run_id")
 	private Run run;
@@ -86,12 +89,12 @@ public class Artifact {
 	@Override
 	public String toString() {
 		return "Artifact [id=" + id + ", name=" + name + ", description=" + description + ", quantity=" + quantity
-				+ ", run=" + run + "]";
+				+ ", slot=" + slot + ", run=" + run + "]";
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(description, id, name, quantity, run);
+		return Objects.hash(description, id, name, quantity, run, slot);
 	}
 
 	@Override
@@ -104,7 +107,7 @@ public class Artifact {
 			return false;
 		Artifact other = (Artifact) obj;
 		return Objects.equals(description, other.description) && id == other.id && Objects.equals(name, other.name)
-				&& quantity == other.quantity && Objects.equals(run, other.run);
+				&& quantity == other.quantity && Objects.equals(run, other.run) && Objects.equals(slot, other.slot);
 	}
 
 }

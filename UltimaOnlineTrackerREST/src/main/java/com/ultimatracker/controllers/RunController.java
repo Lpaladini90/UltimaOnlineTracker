@@ -3,8 +3,6 @@ package com.ultimatracker.controllers;
 import java.security.Principal;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,11 +21,10 @@ public class RunController {
 	private RunService runServ;
 
 	@GetMapping("runs")
-	public List<Run> indexRuns(Principal principle, HttpServletRequest res) {
+	public List<Run> indexRuns(Principal principal) {
 
-		return runServ.indexAllUserRuns(principle.getName());
+		System.out.println("inside run get");
+		return runServ.indexAllUserRuns(principal.getName());
 	}
-	
-	
 
 }

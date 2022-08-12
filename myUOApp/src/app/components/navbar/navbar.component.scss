@@ -1,0 +1,74 @@
+img {
+    height: 60px;
+    width: auto;
+    padding-right: 45px;
+    }
+
+  * {
+    font-size: 18px;
+    line-height: 28px;
+    color: black;
+    font-family: 'Josefin Sans', sans-serif;
+  }
+
+  li {
+    padding-top: 15px;
+    font-size: 14px;
+    padding-left: 55px;
+  }
+
+
+  /* PROFILE/ ACCOUNT  */
+
+
+  img[alt*="profile"] {
+    border-radius: 50%;
+    height: 30px;
+  }
+
+  .profileCard {
+  float: right !important;
+  margin-right: 20px;
+  justify-content: center;
+  padding-top:10px;
+  }
+
+  .profileCard li{
+    list-style: none;
+
+  }
+
+  .Button__withLabel.Button__withIcon:not(.Button__expandable) {
+    padding-left: 12px;
+  }
+  .Button__focused.Button__withLabel, .Button__withLabel:not(.Button__expandable) {
+    padding-right: 16px;
+  }
+  .Button__brand, .Button__brand .Button__icon, .Button__brand:hover {
+    color: #fff;
+  }
+
+  .Button__brand {
+    background-color: white;
+    border-color:white;
+    border-width: 1px;
+  }
+  .Button__mdLg {
+    border-radius: 24px;
+    height: 40px;
+    min-width: 40px;
+    padding: 7px;
+  }
+
+  .Button {
+    cursor: pointer;
+    align-items: center;
+    border-style: solid;
+    border-width: 1px;
+    display: inline-flex;
+    justify-content: flex-start;
+    min-height: 32px;
+    transition: background-color;
+  }
+
+
