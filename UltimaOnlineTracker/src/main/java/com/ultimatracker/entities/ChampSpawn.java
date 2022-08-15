@@ -13,6 +13,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name="champspawn")
 public class ChampSpawn {
@@ -25,8 +27,11 @@ public class ChampSpawn {
 
 	private String location;
 
+	@JsonIgnore
 	@ManyToMany
-	@JoinTable(name = "run_has_champspawn", joinColumns = @JoinColumn(name = "run_id"), inverseJoinColumns = @JoinColumn(name = "champspawn_id"))
+	@JoinTable(name = "run_has_champspawn",
+	joinColumns = @JoinColumn(name = "run_id"),
+	inverseJoinColumns = @JoinColumn(name = "champspawn_id"))
 	private List<Run> runs;
 
 	public ChampSpawn() {

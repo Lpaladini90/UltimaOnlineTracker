@@ -16,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 public class Run {
@@ -37,14 +38,14 @@ public class Run {
 	@ManyToOne
 	@JoinColumn(name="user_id")
 	private User user;
-	@JsonIgnore
+	
 	@OneToMany(mappedBy = "run")
 	private List<Scroll> scrolls;
 
-	@JsonIgnore
+	
 	@OneToMany(mappedBy = "run")
 	private List<Artifact> artifacts;
-	@JsonIgnore
+	
 	@ManyToMany(mappedBy="runs")
 	private List<ChampSpawn> champs;
 	

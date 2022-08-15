@@ -63,17 +63,10 @@ DROP TABLE IF EXISTS `scroll` ;
 
 CREATE TABLE IF NOT EXISTS `scroll` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(45) NULL,
-  `run_id` INT NOT NULL,
-  PRIMARY KEY (`id`),
-  CONSTRAINT `fk_scroll_champspawn1`
-    FOREIGN KEY (`run_id`)
-    REFERENCES `run` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+  `name` VARCHAR(200) NULL,
+  `category` VARCHAR(200) NULL,
+  PRIMARY KEY (`id`))
 ENGINE = InnoDB;
-
-CREATE INDEX `fk_scroll_champspawn1_idx` ON `scroll` (`run_id` ASC);
 
 
 -- -----------------------------------------------------
@@ -196,6 +189,7 @@ DROP TABLE IF EXISTS `run_has_champspawn` ;
 CREATE TABLE IF NOT EXISTS `run_has_champspawn` (
   `run_id` INT NOT NULL AUTO_INCREMENT,
   `champspawn_id` INT NOT NULL,
+  `quantity` INT NULL DEFAULT 1,
   PRIMARY KEY (`run_id`, `champspawn_id`),
   CONSTRAINT `fk_run_has_champspawn_run1`
     FOREIGN KEY (`run_id`)
@@ -212,6 +206,33 @@ ENGINE = InnoDB;
 CREATE INDEX `fk_run_has_champspawn_champspawn1_idx` ON `run_has_champspawn` (`champspawn_id` ASC);
 
 CREATE INDEX `fk_run_has_champspawn_run1_idx` ON `run_has_champspawn` (`run_id` ASC);
+
+
+-- -----------------------------------------------------
+-- Table `run_has_scroll`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `run_has_scroll` ;
+
+CREATE TABLE IF NOT EXISTS `run_has_scroll` (
+  `run_id` INT NOT NULL,
+  `scroll_id` INT NOT NULL,
+  `quantity` INT NULL,
+  PRIMARY KEY (`run_id`, `scroll_id`),
+  CONSTRAINT `fk_run_has_scroll_run1`
+    FOREIGN KEY (`run_id`)
+    REFERENCES `run` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_run_has_scroll_scroll1`
+    FOREIGN KEY (`scroll_id`)
+    REFERENCES `scroll` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+CREATE INDEX `fk_run_has_scroll_scroll1_idx` ON `run_has_scroll` (`scroll_id` ASC);
+
+CREATE INDEX `fk_run_has_scroll_run1_idx` ON `run_has_scroll` (`run_id` ASC);
 
 SET SQL_MODE = '';
 DROP USER IF EXISTS admin@localhost;
@@ -249,7 +270,37 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `uodb`;
-INSERT INTO `scroll` (`id`, `name`, `run_id`) VALUES (1, 'Parrying', 2);
+INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (1, 'Swordsmanship', 'Combat');
+INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (2, 'Tactics', 'Combat');
+INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (3, 'Fencing', 'Combat');
+INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (4, 'Anatomy', 'Combat');
+INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (5, 'Mace Fighting', 'Combat');
+INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (6, 'Healing', 'Combat');
+INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (7, 'Archery', 'Combat');
+INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (8, 'Throwing', 'Combat');
+INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (9, 'Wrestling', 'Combat');
+INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (10, 'Bushido', 'Magic');
+INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (11, 'Parrying', 'Combat');
+INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (12, 'Magery', 'Magic');
+INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (13, 'Meditation', 'Magic');
+INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (14, 'Evaluating Intelligence', 'Magic');
+INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (15, 'Resisting Spells', 'Magic');
+INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (16, 'Stealing', 'Thief');
+INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (17, 'Stealth', 'Thief');
+INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (18, 'Animal Taming', 'Wilderness');
+INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (19, 'Animal Lore', 'Wilderness');
+INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (20, 'Veterinarian', 'Wilderness');
+INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (21, 'Musicianship ', 'Bard');
+INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (22, 'Provocation', 'Bard');
+INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (23, 'Peacemaking', 'Bard');
+INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (24, 'Discordance', 'Bard');
+INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (25, 'Chivalry', 'Magic');
+INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (26, 'Focus', 'Combat');
+INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (27, 'Necromancy', 'Magic');
+INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (28, 'Ninjitstu', 'Combat');
+INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (29, 'Spellweaving', 'Magic');
+INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (30, 'Spirit Speak', 'Magic');
+INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (31, 'Mystic', 'Magic');
 
 COMMIT;
 
@@ -259,7 +310,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `uodb`;
-INSERT INTO `artifact` (`id`, `name`, `description`, `quantity`, `run_id`, `slot`) VALUES (1, 'Janna\'s Staff', 'Luck/Mage staff', '1', 2, 'hand');
+INSERT INTO `artifact` (`id`, `name`, `description`, `quantity`, `run_id`, `slot`) VALUES (1, 'Janna\'s Staff', 'Luck/Mage staff', '1', 2, NULL);
 
 COMMIT;
 
@@ -273,7 +324,7 @@ INSERT INTO `category` (`id`, `name`) VALUES (1, 'Combat');
 INSERT INTO `category` (`id`, `name`) VALUES (2, 'Wilderness');
 INSERT INTO `category` (`id`, `name`) VALUES (3, 'Magic');
 INSERT INTO `category` (`id`, `name`) VALUES (4, 'Bard');
-INSERT INTO `category` (`id`, `name`) VALUES (5, 'Theif');
+INSERT INTO `category` (`id`, `name`) VALUES (5, 'Thief');
 INSERT INTO `category` (`id`, `name`) VALUES (6, 'Crafting');
 
 COMMIT;
@@ -297,7 +348,130 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `uodb`;
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (1, 1);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (1, 2);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (1, 3);
 INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (1, 4);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (2, 1);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (2, 2);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (2, 3);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (2, 4);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (3, 1);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (3, 2);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (3, 3);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (3, 4);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (4, 1);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (4, 2);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (4, 3);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (4, 4);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (5, 1);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (5, 2);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (5, 3);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (5, 4);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (6, 1);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (6, 2);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (6, 3);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (6, 4);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (7, 1);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (7, 2);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (7, 3);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (7, 4);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (8, 1);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (8, 2);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (8, 3);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (8, 4);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (9, 1);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (9, 2);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (9, 3);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (9, 4);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (10, 1);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (10, 2);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (10, 3);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (10, 4);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (11, 1);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (11, 2);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (11, 3);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (11, 4);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (12, 1);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (12, 2);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (12, 3);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (12, 4);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (13, 1);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (13, 2);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (13, 3);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (13, 4);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (14, 1);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (14, 2);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (14, 3);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (14, 4);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (15, 1);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (15, 2);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (15, 3);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (15, 4);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (16, 1);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (16, 2);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (16, 3);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (16, 4);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (17, 1);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (17, 2);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (17, 3);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (17, 4);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (18, 1);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (18, 2);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (18, 3);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (18, 4);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (19, 1);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (19, 2);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (19, 3);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (19, 4);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (20, 1);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (20, 2);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (20, 3);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (20, 4);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (21, 1);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (21, 2);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (21, 3);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (21, 4);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (22, 1);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (22, 2);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (22, 3);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (22, 4);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (23, 1);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (23, 2);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (23, 3);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (23, 4);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (24, 1);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (24, 2);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (24, 3);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (24, 4);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (25, 1);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (25, 2);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (25, 3);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (25, 4);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (26, 1);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (26, 2);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (26, 3);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (26, 4);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (27, 1);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (27, 2);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (27, 3);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (27, 4);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (28, 1);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (28, 2);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (28, 3);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (28, 4);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (29, 1);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (29, 2);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (29, 3);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (29, 4);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (30, 1);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (30, 2);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (30, 3);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (30, 4);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (31, 1);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (31, 2);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (31, 3);
+INSERT INTO `scroll_has_value` (`scroll_id`, `value_id`) VALUES (31, 4);
 
 COMMIT;
 
@@ -308,6 +482,36 @@ COMMIT;
 START TRANSACTION;
 USE `uodb`;
 INSERT INTO `scroll_has_category` (`scroll_id`, `category_id`) VALUES (1, 1);
+INSERT INTO `scroll_has_category` (`scroll_id`, `category_id`) VALUES (2, 1);
+INSERT INTO `scroll_has_category` (`scroll_id`, `category_id`) VALUES (3, 1);
+INSERT INTO `scroll_has_category` (`scroll_id`, `category_id`) VALUES (4, 1);
+INSERT INTO `scroll_has_category` (`scroll_id`, `category_id`) VALUES (5, 1);
+INSERT INTO `scroll_has_category` (`scroll_id`, `category_id`) VALUES (6, 1);
+INSERT INTO `scroll_has_category` (`scroll_id`, `category_id`) VALUES (7, 1);
+INSERT INTO `scroll_has_category` (`scroll_id`, `category_id`) VALUES (8, 1);
+INSERT INTO `scroll_has_category` (`scroll_id`, `category_id`) VALUES (9, 1);
+INSERT INTO `scroll_has_category` (`scroll_id`, `category_id`) VALUES (10, 3);
+INSERT INTO `scroll_has_category` (`scroll_id`, `category_id`) VALUES (11, 1);
+INSERT INTO `scroll_has_category` (`scroll_id`, `category_id`) VALUES (12, 3);
+INSERT INTO `scroll_has_category` (`scroll_id`, `category_id`) VALUES (13, 3);
+INSERT INTO `scroll_has_category` (`scroll_id`, `category_id`) VALUES (14, 3);
+INSERT INTO `scroll_has_category` (`scroll_id`, `category_id`) VALUES (15, 3);
+INSERT INTO `scroll_has_category` (`scroll_id`, `category_id`) VALUES (16, 5);
+INSERT INTO `scroll_has_category` (`scroll_id`, `category_id`) VALUES (17, 5);
+INSERT INTO `scroll_has_category` (`scroll_id`, `category_id`) VALUES (18, 2);
+INSERT INTO `scroll_has_category` (`scroll_id`, `category_id`) VALUES (19, 2);
+INSERT INTO `scroll_has_category` (`scroll_id`, `category_id`) VALUES (20, 2);
+INSERT INTO `scroll_has_category` (`scroll_id`, `category_id`) VALUES (21, 4);
+INSERT INTO `scroll_has_category` (`scroll_id`, `category_id`) VALUES (22, 4);
+INSERT INTO `scroll_has_category` (`scroll_id`, `category_id`) VALUES (23, 4);
+INSERT INTO `scroll_has_category` (`scroll_id`, `category_id`) VALUES (24, 4);
+INSERT INTO `scroll_has_category` (`scroll_id`, `category_id`) VALUES (25, 3);
+INSERT INTO `scroll_has_category` (`scroll_id`, `category_id`) VALUES (26, 1);
+INSERT INTO `scroll_has_category` (`scroll_id`, `category_id`) VALUES (27, 3);
+INSERT INTO `scroll_has_category` (`scroll_id`, `category_id`) VALUES (28, 1);
+INSERT INTO `scroll_has_category` (`scroll_id`, `category_id`) VALUES (29, 3);
+INSERT INTO `scroll_has_category` (`scroll_id`, `category_id`) VALUES (30, 3);
+INSERT INTO `scroll_has_category` (`scroll_id`, `category_id`) VALUES (31, 3);
 
 COMMIT;
 
@@ -320,6 +524,30 @@ USE `uodb`;
 INSERT INTO `champspawn` (`id`, `name`, `location`) VALUES (1, 'Rikki', 'Destard');
 INSERT INTO `champspawn` (`id`, `name`, `location`) VALUES (2, 'Mephitis', 'Terethan Keep');
 INSERT INTO `champspawn` (`id`, `name`, `location`) VALUES (3, 'Primevil Lich', 'Stygian Abyss');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `run_has_champspawn`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `uodb`;
+INSERT INTO `run_has_champspawn` (`run_id`, `champspawn_id`, `quantity`) VALUES (1, 1, 4);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `run_has_scroll`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `uodb`;
+INSERT INTO `run_has_scroll` (`run_id`, `scroll_id`, `quantity`) VALUES (1, 2, 1);
+INSERT INTO `run_has_scroll` (`run_id`, `scroll_id`, `quantity`) VALUES (1, 15, 1);
+INSERT INTO `run_has_scroll` (`run_id`, `scroll_id`, `quantity`) VALUES (1, 4, 2);
+INSERT INTO `run_has_scroll` (`run_id`, `scroll_id`, `quantity`) VALUES (1, 8, 1);
+INSERT INTO `run_has_scroll` (`run_id`, `scroll_id`, `quantity`) VALUES (1, 3, 1);
 
 COMMIT;
 

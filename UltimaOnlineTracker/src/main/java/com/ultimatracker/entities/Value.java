@@ -13,6 +13,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 public class Value {
 
@@ -21,8 +24,10 @@ public class Value {
 	private int id;
 
 	@Column(name = "point_gain")
-	private int pointGain;
+	private int skillCap;
 
+	
+	@JsonIgnore
 	@ManyToMany
 	@JoinTable(name = "scroll_has_value",
 	joinColumns = @JoinColumn(name = "value_id"),
@@ -73,21 +78,21 @@ public class Value {
 	}
 
 	public int getPointGain() {
-		return pointGain;
+		return skillCap;
 	}
 
-	public void setPointGain(int pointGain) {
-		this.pointGain = pointGain;
+	public void setPointGain(int skillCap) {
+		this.skillCap = skillCap;
 	}
 
 	@Override
 	public String toString() {
-		return "Value [id=" + id + ", pointGain=" + pointGain + "]";
+		return "Value [id=" + id + ", pointGain=" + skillCap + "]";
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, pointGain);
+		return Objects.hash(id, skillCap);
 	}
 
 	@Override
@@ -99,7 +104,7 @@ public class Value {
 		if (getClass() != obj.getClass())
 			return false;
 		Value other = (Value) obj;
-		return id == other.id && pointGain == other.pointGain;
+		return id == other.id && skillCap == other.skillCap;
 	}
 
 }

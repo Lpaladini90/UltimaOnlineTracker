@@ -12,6 +12,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 public class Scroll {
 
@@ -21,20 +24,23 @@ public class Scroll {
 
 	private String name;
 
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "run_id")
 	private Run run;
-
+	
+	@JsonIgnore
 	@ManyToMany(mappedBy = "scrolls")
 	private List<Value> values;
 
+	@JsonIgnore
 	@ManyToMany(mappedBy = "scrolls")
 	private List<Category> categories;
 
 	public Scroll() {
 		super();
 	}
-
+ 
 	public void addValue(Value value) {
 		if (values == null) {
 			values = new ArrayList<>();

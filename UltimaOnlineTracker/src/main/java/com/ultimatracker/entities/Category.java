@@ -12,6 +12,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 public class Category {
 
@@ -21,6 +24,8 @@ public class Category {
 
 	private String name;
 
+
+	@JsonIgnore
 	@ManyToMany
 	@JoinTable(name = "scroll_has_category", joinColumns = @JoinColumn(name = "category_id"), inverseJoinColumns = @JoinColumn(name = "scroll_id"))
 	private List<Scroll> scrolls;

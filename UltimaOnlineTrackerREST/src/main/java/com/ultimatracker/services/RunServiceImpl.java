@@ -35,14 +35,19 @@ System.out.println(username);
 
 	@Override
 	public Run findById(String username, int runId) {
-
+		
 		User user = userRepo.findByUsername(username);
-
+		
 		if (user != null) {
+			
+			
 			Optional<Run> runOp = runRepo.findById(runId);
 			if (runOp.isPresent()) {
+			
 				Run run = runOp.get();
+			if(run.getUser().getUsername() == user.getUsername()) {
 				return run;
+			}
 			}
 		}
 
