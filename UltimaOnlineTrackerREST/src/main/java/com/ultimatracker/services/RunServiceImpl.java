@@ -26,28 +26,26 @@ public class RunServiceImpl implements RunService {
 
 	@Override
 	public List<Run> indexAllUserRuns(String username) {
-System.out.println("iniside run impl");
-System.out.println(username);
+		System.out.println("iniside run impl");
+		System.out.println(username);
 		return runRepo.findByUser_Username(username);
 
 	}
-	
 
 	@Override
 	public Run findById(String username, int runId) {
-		
+
 		User user = userRepo.findByUsername(username);
-		
+
 		if (user != null) {
-			
-			
+
 			Optional<Run> runOp = runRepo.findById(runId);
 			if (runOp.isPresent()) {
-			
+
 				Run run = runOp.get();
-			if(run.getUser().getUsername() == user.getUsername()) {
-				return run;
-			}
+				if (run.getUser().getUsername() == user.getUsername()) {
+					return run;
+				}
 			}
 		}
 
@@ -61,8 +59,15 @@ System.out.println(username);
 		if (user != null) {
 			Run newRun = run;
 			newRun.setUser(user);
-
+			addScrolls(username, null, 0);
+			addArtifact(username, null, 0);
+			
 			runRepo.saveAndFlush(newRun);
+			
+		
+			
+			
+			
 			return newRun;
 
 		}
@@ -151,8 +156,5 @@ System.out.println(username);
 		// TODO Auto-generated method stub
 		return false;
 	}
-
-
-
 
 }

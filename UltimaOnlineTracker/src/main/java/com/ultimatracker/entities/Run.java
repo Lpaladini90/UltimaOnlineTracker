@@ -35,7 +35,7 @@ public class Run {
 	@Column(name="date_attended")
 	private LocalDateTime attendedDate;
 	
-	@JsonIgnore
+	
 	@ManyToOne
 	@JoinColumn(name="user_id")
 	private User user;

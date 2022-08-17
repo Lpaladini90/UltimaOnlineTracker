@@ -6,11 +6,11 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -68,7 +68,7 @@ public class RunController {
 
 	}
 
-	@PostMapping("run")
+	@PostMapping("runs")
 	public Run createNewRun(@RequestBody Run run, Principal principal, HttpServletResponse res) {
 
 		Run newRun = runServ.addRun(principal.getName(),run);
@@ -91,5 +91,27 @@ public class RunController {
 		
 
 	}
-
+	
+	@PutMapping("runs/{runId}")
+	public Run editRun ( @PathVariable("runId")int runId, @RequestBody Run run, Principal principal, HttpServletResponse res) {
+		
+		Run managedRun = runServ.editRun(principal.getName(), run, runId);
+	try {	
+		if(managedRun !=null) {
+			if(managedRun.getUser().getUsername() == principal.getName()) {
+				res.setStatus(200);
+				return managedRun;
+			}
+			
+		}
+	}catch(Exception e) {
+		res.setStatus(400);
+		e.printStackTrace();
+	}
+	return null;
+		
+		
+	}
+	
+	
 }
