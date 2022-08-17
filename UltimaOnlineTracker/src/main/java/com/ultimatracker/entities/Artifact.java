@@ -28,6 +28,7 @@ public class Artifact {
 	
 	private String slot;
 	
+	
 	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "run_id")

@@ -64,7 +64,6 @@ DROP TABLE IF EXISTS `scroll` ;
 CREATE TABLE IF NOT EXISTS `scroll` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(200) NULL,
-  `category` VARCHAR(200) NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
@@ -270,37 +269,37 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `uodb`;
-INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (1, 'Swordsmanship', 'Combat');
-INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (2, 'Tactics', 'Combat');
-INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (3, 'Fencing', 'Combat');
-INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (4, 'Anatomy', 'Combat');
-INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (5, 'Mace Fighting', 'Combat');
-INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (6, 'Healing', 'Combat');
-INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (7, 'Archery', 'Combat');
-INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (8, 'Throwing', 'Combat');
-INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (9, 'Wrestling', 'Combat');
-INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (10, 'Bushido', 'Magic');
-INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (11, 'Parrying', 'Combat');
-INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (12, 'Magery', 'Magic');
-INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (13, 'Meditation', 'Magic');
-INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (14, 'Evaluating Intelligence', 'Magic');
-INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (15, 'Resisting Spells', 'Magic');
-INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (16, 'Stealing', 'Thief');
-INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (17, 'Stealth', 'Thief');
-INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (18, 'Animal Taming', 'Wilderness');
-INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (19, 'Animal Lore', 'Wilderness');
-INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (20, 'Veterinarian', 'Wilderness');
-INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (21, 'Musicianship ', 'Bard');
-INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (22, 'Provocation', 'Bard');
-INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (23, 'Peacemaking', 'Bard');
-INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (24, 'Discordance', 'Bard');
-INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (25, 'Chivalry', 'Magic');
-INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (26, 'Focus', 'Combat');
-INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (27, 'Necromancy', 'Magic');
-INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (28, 'Ninjitstu', 'Combat');
-INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (29, 'Spellweaving', 'Magic');
-INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (30, 'Spirit Speak', 'Magic');
-INSERT INTO `scroll` (`id`, `name`, `category`) VALUES (31, 'Mystic', 'Magic');
+INSERT INTO `scroll` (`id`, `name`) VALUES (1, 'Swordsmanship');
+INSERT INTO `scroll` (`id`, `name`) VALUES (2, 'Tactics');
+INSERT INTO `scroll` (`id`, `name`) VALUES (3, 'Fencing');
+INSERT INTO `scroll` (`id`, `name`) VALUES (4, 'Anatomy');
+INSERT INTO `scroll` (`id`, `name`) VALUES (5, 'Mace Fighting');
+INSERT INTO `scroll` (`id`, `name`) VALUES (6, 'Healing');
+INSERT INTO `scroll` (`id`, `name`) VALUES (7, 'Archery');
+INSERT INTO `scroll` (`id`, `name`) VALUES (8, 'Throwing');
+INSERT INTO `scroll` (`id`, `name`) VALUES (9, 'Wrestling');
+INSERT INTO `scroll` (`id`, `name`) VALUES (10, 'Bushido');
+INSERT INTO `scroll` (`id`, `name`) VALUES (11, 'Parrying');
+INSERT INTO `scroll` (`id`, `name`) VALUES (12, 'Magery');
+INSERT INTO `scroll` (`id`, `name`) VALUES (13, 'Meditation');
+INSERT INTO `scroll` (`id`, `name`) VALUES (14, 'Evaluating Intelligence');
+INSERT INTO `scroll` (`id`, `name`) VALUES (15, 'Resisting Spells');
+INSERT INTO `scroll` (`id`, `name`) VALUES (16, 'Stealing');
+INSERT INTO `scroll` (`id`, `name`) VALUES (17, 'Stealth');
+INSERT INTO `scroll` (`id`, `name`) VALUES (18, 'Animal Taming');
+INSERT INTO `scroll` (`id`, `name`) VALUES (19, 'Animal Lore');
+INSERT INTO `scroll` (`id`, `name`) VALUES (20, 'Veterinarian');
+INSERT INTO `scroll` (`id`, `name`) VALUES (21, 'Musicianship ');
+INSERT INTO `scroll` (`id`, `name`) VALUES (22, 'Provocation');
+INSERT INTO `scroll` (`id`, `name`) VALUES (23, 'Peacemaking');
+INSERT INTO `scroll` (`id`, `name`) VALUES (24, 'Discordance');
+INSERT INTO `scroll` (`id`, `name`) VALUES (25, 'Chivalry');
+INSERT INTO `scroll` (`id`, `name`) VALUES (26, 'Focus');
+INSERT INTO `scroll` (`id`, `name`) VALUES (27, 'Necromancy');
+INSERT INTO `scroll` (`id`, `name`) VALUES (28, 'Ninjitstu');
+INSERT INTO `scroll` (`id`, `name`) VALUES (29, 'Spellweaving');
+INSERT INTO `scroll` (`id`, `name`) VALUES (30, 'Spirit Speak');
+INSERT INTO `scroll` (`id`, `name`) VALUES (31, 'Mystic');
 
 COMMIT;
 
@@ -310,7 +309,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `uodb`;
-INSERT INTO `artifact` (`id`, `name`, `description`, `quantity`, `run_id`, `slot`) VALUES (1, 'Janna\'s Staff', 'Luck/Mage staff', '1', 2, NULL);
+INSERT INTO `artifact` (`id`, `name`, `description`, `quantity`, `run_id`, `slot`) VALUES (1, 'Janna\'s Staff', 'Luck/Mage staff', '1', 1, 'Hand');
 
 COMMIT;
 
@@ -543,10 +542,10 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `uodb`;
-INSERT INTO `run_has_scroll` (`run_id`, `scroll_id`, `quantity`) VALUES (1, 2, 1);
-INSERT INTO `run_has_scroll` (`run_id`, `scroll_id`, `quantity`) VALUES (1, 15, 1);
-INSERT INTO `run_has_scroll` (`run_id`, `scroll_id`, `quantity`) VALUES (1, 4, 2);
-INSERT INTO `run_has_scroll` (`run_id`, `scroll_id`, `quantity`) VALUES (1, 8, 1);
+INSERT INTO `run_has_scroll` (`run_id`, `scroll_id`, `quantity`) VALUES (1, 5, 1);
+INSERT INTO `run_has_scroll` (`run_id`, `scroll_id`, `quantity`) VALUES (1, 2, 2);
+INSERT INTO `run_has_scroll` (`run_id`, `scroll_id`, `quantity`) VALUES (1, 16, 1);
+INSERT INTO `run_has_scroll` (`run_id`, `scroll_id`, `quantity`) VALUES (1, 24, 1);
 INSERT INTO `run_has_scroll` (`run_id`, `scroll_id`, `quantity`) VALUES (1, 3, 1);
 
 COMMIT;

@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -39,7 +40,10 @@ public class Run {
 	@JoinColumn(name="user_id")
 	private User user;
 	
-	@OneToMany(mappedBy = "run")
+	@ManyToMany
+	@JoinTable(name = "run_has_scroll",
+	joinColumns = @JoinColumn(name = "run_id"),
+	inverseJoinColumns = @JoinColumn(name = "scroll_id"))
 	private List<Scroll> scrolls;
 
 	
@@ -53,6 +57,30 @@ public class Run {
 	
 	public Run() {
 		super();
+	}
+	
+	
+	public void addScroll(Scroll scroll) {
+		if(scrolls == null) {
+			scrolls = new ArrayList<>();
+			if(!scrolls.contains(scroll)) {
+				scrolls.add(scroll);
+				scroll.addRun(this);
+			}
+			else {
+				scrolls.add(scroll);
+				scroll.addRun(this);
+			}
+		}
+		
+	}
+	
+	public void removeScroll(Scroll scroll) {
+		if(scrolls.contains(scroll)) {
+			scrolls.remove(scroll);
+			scroll.removeRun(this);
+		}
+		
 	}
 
 	public void addChampSpawn(ChampSpawn champ) {
@@ -149,21 +177,14 @@ public class Run {
 
 
 
+
 	public List<Scroll> getScrolls() {
 		return scrolls;
 	}
 
-
-
 	public void setScrolls(List<Scroll> scrolls) {
 		this.scrolls = scrolls;
 	}
-
-
-
-	
-
-
 
 	public List<Artifact> getArtifacts() {
 		return artifacts;
