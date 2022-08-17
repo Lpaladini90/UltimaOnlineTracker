@@ -17,6 +17,8 @@
     <class>com.ultimatracker.entities.Scroll</class>
     <class>com.ultimatracker.entities.Value</class>
     <class>com.ultimatracker.entities.Category</class>
+    <class>com.ultimatracker.entities.RunScrolls</class>
+    <class>com.ultimatracker.entities.RunScrollsId</class>
     
     
      

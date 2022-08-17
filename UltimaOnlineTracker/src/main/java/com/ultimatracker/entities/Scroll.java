@@ -24,10 +24,10 @@ public class Scroll {
 
 	private String name;
 
-	@JsonIgnore
-	@ManyToOne
-	@JoinColumn(name = "run_id")
-	private Run run;
+	
+	@ManyToMany(mappedBy ="scrolls")
+	private List<Run> runs;
+
 	
 	@JsonIgnore
 	@ManyToMany(mappedBy = "scrolls")
@@ -40,6 +40,31 @@ public class Scroll {
 	public Scroll() {
 		super();
 	}
+	
+	public void addRun(Run run) {
+		if(runs == null) {
+			runs = new ArrayList<>();
+			
+		if(!runs.contains(run)) {
+			runs.add(run);
+			run.addScroll(this);
+		}
+		else {
+			runs.add(run);
+			run.addScroll(this);
+		}
+		}
+		
+	}
+	
+	public void removeRun(Run run) {
+		if(runs.contains(run)) {
+			runs.remove(run);
+			run.removeScroll(null);
+		}
+		
+	}
+	
  
 	public void addValue(Value value) {
 		if (values == null) {
@@ -102,14 +127,7 @@ public class Scroll {
 		this.categories = categories;
 	}
 
-	public Run getRun() {
-		return run;
-	}
-
-	public void setRun(Run run) {
-		this.run = run;
-	}
-
+	
 	public List<Value> getValues() {
 		return values;
 	}
@@ -132,13 +150,12 @@ public class Scroll {
 
 	@Override
 	public String toString() {
-		return "Scroll [id=" + id + ", name=" + name + ", run=" + run + ", values=" + values + ", categories="
-				+ categories + "]";
+		return "Scroll [id=" + id + ", name=" + name + ", values=" + values + ", categories=" + categories + "]";
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(categories, id, name, run, values);
+		return Objects.hash(categories, id, name, values);
 	}
 
 	@Override
@@ -151,7 +168,7 @@ public class Scroll {
 			return false;
 		Scroll other = (Scroll) obj;
 		return Objects.equals(categories, other.categories) && id == other.id && Objects.equals(name, other.name)
-				&& Objects.equals(run, other.run) && Objects.equals(values, other.values);
+				&& Objects.equals(values, other.values);
 	}
 
 }
